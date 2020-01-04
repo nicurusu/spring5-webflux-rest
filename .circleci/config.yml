@@ -39,7 +39,23 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests! and gen code coverage
-      - run: gradle test
+      - run:
+          name: chmod permissions
+          command: chmod +x ./gradlew
+      - run: ./gradlew clean test jacocoTestReport
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+
+      - store_test_results:
+          path: ~/junit
+
+      - store_artifacts:
+          path: ~/junit
 
       - run:
           name: Send to CodeCov
