@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/nicurusu/reactive-mongo-recipe-app.svg?style=svg&circle-token=bf62056b5cb20d4b51f5e25e512df14e9d4b5260)](https://circleci.com/gh/nicurusu/reactive-mongo-recipe-app)
+[![CircleCI](https://circleci.com/gh/nicurusu/spring5-webflux-rest.svg?style=svg)](https://circleci.com/gh/nicurusu/spring5-webflux-rest)
 
-[![codecov](https://codecov.io/gh/nicurusu/reactive-mongo-recipe-app/branch/master/graph/badge.svg?token=6r1VtotCMm)](https://codecov.io/gh/nicurusu/reactive-mongo-recipe-app)
+[![codecov](https://codecov.io/gh/nicurusu/spring5-webflux-rest/branch/master/graph/badge.svg)](https://codecov.io/gh/nicurusu/spring5-webflux-rest)
 
 # spring5-webflux-rest
 RESTFul WebServices with Spring WebFlux
