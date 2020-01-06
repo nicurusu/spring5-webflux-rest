@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping(VendorController.BASE_URL)
 public class VendorController {
 
-    private final VendorRepository vendorRepository;
     public static final String BASE_URL = "/api/v1/vendors";
+    private final VendorRepository vendorRepository;
 
     public VendorController(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
@@ -39,5 +39,16 @@ public class VendorController {
     Mono<Vendor> update(@PathVariable String id, @RequestBody Vendor vendor) {
         vendor.setId(id);
         return vendorRepository.save(vendor);
+    }
+
+    @PatchMapping("/{id}")
+    Mono<Vendor> patch(@PathVariable String id, @RequestBody Vendor vendor) {
+        Vendor foundVendor = vendorRepository.findById(id).block();
+        if (foundVendor.getFirstName() != vendor.getFirstName()) {
+            foundVendor.setFirstName(vendor.getFirstName());
+            if (foundVendor.getLastName() != vendor.getLastName()) foundVendor.setLastName(vendor.getLastName());
+            return vendorRepository.save(foundVendor);
+        }
+        return Mono.just(foundVendor);
     }
 }

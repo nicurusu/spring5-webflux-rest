@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping(CategoryController.BASE_URL)
 public class CategoryController {
 
-    private final CategoryRepository categoryRepository;
     public static final String BASE_URL = "/api/v1/categories";
+    private final CategoryRepository categoryRepository;
 
     public CategoryController(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -39,5 +39,15 @@ public class CategoryController {
     Mono<Category> update(@PathVariable String id, @RequestBody Category category) {
         category.setId(id);
         return categoryRepository.save(category);
+    }
+
+    @PatchMapping("/{id}")
+    Mono<Category> patch(@PathVariable String id, @RequestBody Category category) {
+        Category foundCategory = categoryRepository.findById(id).block();
+        if (foundCategory.getDescription() != category.getDescription()) {
+            foundCategory.setDescription(category.getDescription());
+            return categoryRepository.save(foundCategory);
+        }
+        return Mono.just(foundCategory);
     }
 }
