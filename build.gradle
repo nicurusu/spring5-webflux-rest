@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
+    id 'eclipse'
     id 'jacoco'
 }
 
@@ -35,6 +36,7 @@ dependencies {
     }
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation 'io.projectreactor:reactor-test'
+    implementation 'junit:junit:4.12'
 }
 
 test {
