@@ -19,6 +19,9 @@ class VendorControllerTest {
     VendorRepository vendorRepository;
     VendorController vendorController;
 
+    public static final String VENDOR_URL = VendorController.BASE_URL + "/sameId";
+
+
     @BeforeEach
     void setUp() {
         vendorRepository = Mockito.mock(VendorRepository.class);
@@ -32,7 +35,7 @@ class VendorControllerTest {
                 .willReturn(Flux.just(Vendor.builder().lastName("Joe").firstName("First").build(),
                         Vendor.builder().lastName("Joe").firstName("Second").build()));
 
-        webTestClient.get().uri("/api/v1/vendors")
+        webTestClient.get().uri(VendorController.BASE_URL)
                 .exchange()
                 .expectBodyList(Vendor.class)
                 .hasSize(2);
@@ -43,7 +46,7 @@ class VendorControllerTest {
         BDDMockito.given(vendorRepository.findById("someid"))
                 .willReturn(Mono.just(Vendor.builder().lastName("Joe").firstName("Single").build()));
 
-        webTestClient.get().uri("/api/v1/vendors/someid")
+        webTestClient.get().uri(VENDOR_URL)
                 .exchange()
                 .expectBodyList(Vendor.class);
     }
@@ -56,7 +59,7 @@ class VendorControllerTest {
         Mono<Vendor> vendorToSaveMono = Mono.just(Vendor.builder().firstName("Joe").lastName("Black").build());
 
         webTestClient.post()
-                .uri("/api/v1/vendors")
+                .uri(VendorController.BASE_URL)
                 .body(vendorToSaveMono, Vendor.class)
                 .exchange()
                 .expectStatus()
@@ -71,7 +74,7 @@ class VendorControllerTest {
         Mono<Vendor> vendorToUpdateMono = Mono.just(Vendor.builder().firstName("Joe").lastName("Blacks").build());
 
         webTestClient.put()
-                .uri("/api/v1/vendors/sameId")
+                .uri(VENDOR_URL)
                 .body(vendorToUpdateMono, Vendor.class)
                 .exchange()
                 .expectStatus()

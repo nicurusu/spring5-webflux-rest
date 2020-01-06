@@ -19,6 +19,8 @@ class CategoryControllerTest {
     CategoryRepository categoryRepository;
     CategoryController categoryController;
 
+    public static final String CATEGORY_URL = CategoryController.BASE_URL + "/sameId";
+
     @BeforeEach
     void setUp() {
         categoryRepository = Mockito.mock(CategoryRepository.class);
@@ -32,7 +34,7 @@ class CategoryControllerTest {
                 .willReturn(Flux.just(Category.builder().description("Cat1").build(),
                         Category.builder().description("Cat2").build()));
 
-        webTestClient.get().uri("/api/v1/categories")
+        webTestClient.get().uri(CategoryController.BASE_URL)
                 .exchange()
                 .expectBodyList(Category.class)
                 .hasSize(2);
@@ -43,7 +45,7 @@ class CategoryControllerTest {
         BDDMockito.given(categoryRepository.findById("someid"))
                 .willReturn(Mono.just(Category.builder().description("Cat").build()));
 
-        webTestClient.get().uri("/api/v1/categories/someid")
+        webTestClient.get().uri(CATEGORY_URL)
                 .exchange()
                 .expectBodyList(Category.class);
     }
@@ -56,7 +58,7 @@ class CategoryControllerTest {
         Mono<Category> categoryToSaveMono = Mono.just(Category.builder().description("Categ1").build());
 
         webTestClient.post()
-                .uri("/api/v1/categories")
+                .uri(CategoryController.BASE_URL)
                 .body(categoryToSaveMono, Category.class)
                 .exchange()
                 .expectStatus()
@@ -71,7 +73,7 @@ class CategoryControllerTest {
         Mono<Category> categoryToUpdateMono = Mono.just(Category.builder().description("Categ2").build());
 
         webTestClient.put()
-                .uri("/api/v1/categories/sameId")
+                .uri(CATEGORY_URL)
                 .body(categoryToUpdateMono, Category.class)
                 .exchange()
                 .expectStatus()

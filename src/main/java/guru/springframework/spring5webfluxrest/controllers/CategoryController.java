@@ -9,31 +9,33 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
+@RequestMapping(CategoryController.BASE_URL)
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;
+    public static final String BASE_URL = "/api/v1/categories";
 
     public CategoryController(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping("/api/v1/categories")
+    @GetMapping
     Flux<Category> list() {
         return categoryRepository.findAll();
     }
 
-    @GetMapping("/api/v1/categories/{id}")
+    @GetMapping("/{id}")
     Mono<Category> getById(@PathVariable String id) {
         return categoryRepository.findById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/api/v1/categories")
+    @PostMapping
     Mono<Void> create(@RequestBody Publisher<Category> categoryStream) {
         return categoryRepository.saveAll(categoryStream).then();
     }
 
-    @PutMapping("/api/v1/categories/{id}")
+    @PutMapping("/{id}")
     Mono<Category> update(@PathVariable String id, @RequestBody Category category) {
         category.setId(id);
         return categoryRepository.save(category);
